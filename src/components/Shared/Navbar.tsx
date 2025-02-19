@@ -10,6 +10,7 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FiShoppingCart } from "react-icons/fi";
 import { MdAccountCircle } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 
 const links = [
   {
@@ -72,17 +73,18 @@ const Navbar = () => {
           <div className="hidden sm:flex sm:items-center sm:justify-center flex-1">
             <div className="flex space-x-3 lg:space-x-4">
               {links.map((link) => (
-                <a
+                <NavLink
                   key={link.path}
-                  href={link.path}
-                  className={`${
-                    pathName === link.path
-                      ? "bg-primary  font-semibold shadow-lg"
-                      : " hover:bg-hover hover:"
-                  } rounded-md px-2 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
+                  to={link.path}
+                  // className={`${
+                  //   pathName === link.path
+                  //     ? "bg-primary  font-semibold shadow-lg"
+                  //     : " hover:bg-hover hover:"
+                  // } rounded-md px-2 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
+                  className={({ isActive }) => isActive ? "text-secondary text-base font-medium px-2" : "text-base px-2 hover:text-secondary font-medium transition-all duration-300 ease-in-out"}
                 >
                   {link.title}
-                </a>
+                </NavLink>
               ))}
             </div>
           </div>
@@ -176,17 +178,14 @@ const Navbar = () => {
       <DisclosurePanel className="sm:hidden">
         <div className="flex flex-col space-y-1 px-2 pb-3 pt-2 text-white">
           {links.map((link) => (
-            <a
+            <NavLink
               key={link.path}
-              href={link.path}
-              className={`${
-                pathName === link.path
-                  ? "bg-primary  font-semibold shadow-lg"
-                  : " hover:bg-hover hover:"
-              } rounded-md px-4 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
+              to={link.path}
+              className={({ isActive }) => isActive ? "text-secondary text-base" : "text-base hover:text-secondary transition-all duration-300 ease-in-out"}
+
             >
               {link.title}
-            </a>
+            </NavLink>
           ))}
         </div>
       </DisclosurePanel>
