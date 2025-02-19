@@ -1,4 +1,4 @@
-const register = () => {
+const Register = () => {
     return (
         <div>
             register
@@ -6,4 +6,4 @@ const register = () => {
     );
 };
 
-export default register;
+export default Register;
