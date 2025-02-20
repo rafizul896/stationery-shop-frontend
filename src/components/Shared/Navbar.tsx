@@ -34,7 +34,6 @@ const links = [
 
 const Navbar = () => {
   const login = false;
-  const pathName = "";
   const unreadCount = 1;
 
   return (
