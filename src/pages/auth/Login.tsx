@@ -21,7 +21,10 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({defaultValues: {
+    email: 'user@gmail.com',
+    password:'user123'
+  }});
 
   const handleLogIn = async (data: FieldValues) => {
     setLoading(true);
@@ -33,11 +36,15 @@ const LoginPage = () => {
       const res = await login(loginData).unwrap();
       const user = verifyToken(res.data.accessToken);
       dispatch(setUser({ user, token: res.data.accessToken }));
-      toast.success("Login in Successfully");
 
-      setLoading(false);
-
-      navigate(`/`);
+      if (res.error) {
+        toast.error(res.error.data.message);
+        setLoading(false);
+      } else {
+        toast.success("Login in Successfully");
+        navigate(`/`);
+        setLoading(false);
+      }
     } catch (err) {
       setLoading(false);
       if (err instanceof Error) {
@@ -49,8 +56,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[90vh] custom-container">
-      <div className="flex w-full mx-auto overflow-hidden bg-white rounded-lg shadow-lg borde">
+    <div className="flex justify-center items-center h-[86vh] custom-container">
+      <div className="flex w-full border md:border-none mx-auto overflow-hidden bg-white rounded-lg shadow-lg borde">
         <div
           className="bg-contain bg-center md:block md:w-1/2"
           style={{
@@ -80,7 +87,6 @@ const LoginPage = () => {
               register={register("email", { required: "Email is required." })}
               error={errors?.email?.message as string}
             />
-
             {/* Password Field */}
             <div className="relative">
               <FInput

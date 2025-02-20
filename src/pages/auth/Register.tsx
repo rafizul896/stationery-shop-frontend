@@ -1,13 +1,19 @@
 import FInput from "@/components/form/FInput";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { TResponse } from "@/types/global";
+import { TUser } from "@/types/user";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [createUser] = useRegisterMutation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -16,7 +22,33 @@ const Register = () => {
   } = useForm();
 
   const handleLogIn = async (data: FieldValues) => {
-    console.log(data);
+    setLoading(true);
+
+    const userData = {
+      ...data,
+    };
+
+    console.log(userData)
+
+    try {
+      const res = (await createUser(userData)) as TResponse<TUser>;
+
+      if (res.error) {
+        toast.error(res.error.data.message);
+        setLoading(false);
+      } else {
+        toast.success("Registration  in Successfully");
+        navigate(`/login`);
+        setLoading(false);
+      }
+    } catch (err) {
+      setLoading(false);
+      if (err instanceof Error) {
+        toast.error(err?.message || "Something went wrong!", {
+          delay: 2000,
+        });
+      }
+    }
   };
 
   return (
