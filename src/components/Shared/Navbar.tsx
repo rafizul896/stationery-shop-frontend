@@ -1,3 +1,5 @@
+import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   Disclosure,
   DisclosureButton,
@@ -33,7 +35,8 @@ const links = [
 ];
 
 const Navbar = () => {
-  const login = false;
+  const user = useAppSelector(selectCurrentUser);
+  const dispatch = useAppDispatch();
   const unreadCount = 1;
 
   return (
@@ -73,14 +76,13 @@ const Navbar = () => {
             <div className="flex space-x-3 lg:space-x-4">
               {links.map((link) => (
                 <NavLink
-                  key={link.path}
-                  to={link.path}
-                  // className={`${
-                  //   pathName === link.path
-                  //     ? "bg-primary  font-semibold shadow-lg"
-                  //     : " hover:bg-hover hover:"
-                  // } rounded-md px-2 py-2 text-sm font-medium transition-all duration-300 ease-in-out`}
-                  className={({ isActive }) => isActive ? "text-secondary text-base font-medium px-2" : "text-base px-2 hover:text-secondary font-medium transition-all duration-300 ease-in-out"}
+                  key={link?.path}
+                  to={link?.path}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-secondary text-base font-medium px-2"
+                      : "text-base px-2 hover:text-secondary font-medium transition-all duration-300 ease-in-out"
+                  }
                 >
                   {link.title}
                 </NavLink>
@@ -92,7 +94,7 @@ const Navbar = () => {
           <div className="relative inset-y-0 right-0 flex  items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Account dropdown */}
             <Menu as="div" className="relative ml-3">
-              {login === true ? (
+              {user ? (
                 <>
                   <div>
                     <MenuButton>
@@ -102,34 +104,27 @@ const Navbar = () => {
                       </div>
                     </MenuButton>
                   </div>
-                  <MenuItems className="absolute right-0 z-50 mt-4 w-[250px] origin-top-right rounded-md bg-white py-1 shadow-lg ring- ring-blac ring-opacity-5 focus:outline-none">
-                    {/* If there is user */}
-                    {login === true && (
-                      <>
-                        <div className="px-3">
-                          <MenuItem>
-                            <a
-                              href="/dashboard"
-                              className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors duration-200"
-                            >
-                              My Dashboards
-                            </a>
-                          </MenuItem>
-                          {/* Divider */}
-                          <div className="border-t border-gray-200"></div>
-                          <MenuItem>
-                            <>
-                              <button
-                                // onClick={() => signOut()}
-                                className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-start hover:text-red-800 transition-colors duration-200"
-                              >
-                                Logout
-                              </button>
-                            </>
-                          </MenuItem>
-                        </div>
-                      </>
-                    )}
+                  <MenuItems className="absolute border right-0 z-50 mt-4 w-[250px] origin-top-right rounded-md bg-white py-1 shadow-lg ring- ring-blac ring-opacity-5 focus:outline-none">
+                    <div className="px-3">
+                      <MenuItem>
+                        <a
+                          href="/dashboard"
+                          className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors duration-200"
+                        >
+                          My Dashboards
+                        </a>
+                      </MenuItem>
+                      {/* Divider */}
+                      <div className="border-t border-gray-200"></div>
+                      <MenuItem>
+                        <button
+                          onClick={() => dispatch(logout())}
+                          className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-start hover:text-red-800 transition-colors duration-200"
+                        >
+                          Logout
+                        </button>
+                      </MenuItem>
+                    </div>
                   </MenuItems>
                 </>
               ) : (
@@ -180,8 +175,11 @@ const Navbar = () => {
             <NavLink
               key={link.path}
               to={link.path}
-              className={({ isActive }) => isActive ? "text-secondary text-base" : "text-base hover:text-secondary transition-all duration-300 ease-in-out"}
-
+              className={({ isActive }) =>
+                isActive
+                  ? "text-secondary text-base"
+                  : "text-base hover:text-secondary transition-all duration-300 ease-in-out"
+              }
             >
               {link.title}
             </NavLink>

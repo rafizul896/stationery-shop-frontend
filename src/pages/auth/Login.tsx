@@ -1,14 +1,21 @@
 import FInput from "@/components/form/FInput";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-
+import { toast } from "react-toastify";
 import { TbFidgetSpinner } from "react-icons/tb"; // Icons from react-icons
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [login] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -17,7 +24,28 @@ const LoginPage = () => {
   } = useForm();
 
   const handleLogIn = async (data: FieldValues) => {
-    console.log(data);
+    setLoading(true);
+    const loginData = {
+      ...data,
+    };
+
+    try {
+      const res = await login(loginData).unwrap();
+      const user = verifyToken(res.data.accessToken);
+      dispatch(setUser({ user, token: res.data.accessToken }));
+      toast.success("Login in Successfully");
+
+      setLoading(false);
+
+      navigate(`/`);
+    } catch (err) {
+      setLoading(false);
+      if (err instanceof Error) {
+        toast.error(err?.message || "Something went wrong!", {
+          delay: 2000,
+        });
+      }
+    }
   };
 
   return (
@@ -81,7 +109,7 @@ const LoginPage = () => {
                 className="bg-primary hover:bg-hover w-full rounded-md py-3 font-medium text-white"
               >
                 {loading === true ? (
-                  <TbFidgetSpinner className="animate-spin m-auto" />
+                  <TbFidgetSpinner className="animate-spin m-auto " />
                 ) : (
                   "Login"
                 )}

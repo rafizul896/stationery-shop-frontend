@@ -21,6 +21,14 @@
   }
 }
 
+.Toastify__progress-bar--success {
+  background-color: #f24080 !important;
+}
+
+.Toastify__toast--success svg {
+  fill: #f24080 !important; /* Change the icon color */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
