@@ -5,7 +5,7 @@ const Footer = () => {
         <div className="lg:w-1/3">
           <a
             rel="noopener noreferrer"
-            href="#"
+            href="/"
             className="flex justify-center space-x-3 lg:justify-start"
           >
             <img
