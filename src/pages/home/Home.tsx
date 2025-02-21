@@ -2,6 +2,7 @@ import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import Banner from "./Banner";
 import Features from "./Features";
 import SectionTitle from "@/components/Shared/SectionTitle";
+import FeaturedCategories from "./FeaturedCategories ";
 
 const Home = () => {
   const { data } = useGetAllProductsQuery(undefined);
@@ -16,6 +17,7 @@ const Home = () => {
         heading="Featured Categories"
         subTitle="Choose your necessary products from this feature categories"
       />
+      <FeaturedCategories/>
     </div>
   );
 };

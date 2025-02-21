@@ -1,3 +1,4 @@
+import CustomButton from "@/components/ui/CustomButton";
 import { MdArrowRightAlt } from "react-icons/md";
 
 const Banner = () => {
@@ -21,14 +22,23 @@ const Banner = () => {
             content here&#8217;, making it look like readable English
           </p>
           <br />
-          <button className="px-4 py-2 brder text-white  bg-secondary rounded-sm">
+          {/* <button className="px-4 py-2 brder text-white  bg-secondary rounded-sm">
             <div className="flex justify-center items-center gap-1">
               <a href={"/products"} className="font-medium">
                 SHOP NOW
               </a>
               <MdArrowRightAlt className="text-white text-2xl" />
             </div>
-          </button>
+          </button> */}
+
+          <a href={"/products"} className="font-medium flex justify-center">
+            <CustomButton
+              text={"SHOP NOW"}
+              icon={MdArrowRightAlt}
+              type="button"
+              className=""
+            />
+          </a>
         </div>
       </div>
     </div>

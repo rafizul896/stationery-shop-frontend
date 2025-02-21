@@ -17,6 +17,10 @@ export default {
           DEFAULT: "#f24080", // Replace with your custom secondary color
           foreground: "#ffffff", // Add a foreground color for text on secondary background
         },
+        phover: {
+          DEFAULT: "#5b318d", // Replace with your custom secondary color
+          foreground: "#ffffff", // Add a foreground color for text on secondary background
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
