@@ -7,6 +7,7 @@ interface FInputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   register?: any;
   error?: string;
+  className?:string;
 }
 
 export default function FInput({
@@ -18,6 +19,7 @@ export default function FInput({
   onChange,
   register,
   error,
+  className
 }: FInputProps) {
   return (
     <div className="flex flex-col space-y-2">
@@ -29,7 +31,7 @@ export default function FInput({
         value={value}
         onChange={onChange}
         {...register}
-        className='text-sm w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-secondar focus:outline-none text-gray-900'
+        className={`text-sm w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-secondar focus:outline-none text-gray-900 ${className}`}
       />
 
       {error && <span className="text-red-500 text-xs">{error}</span>}
