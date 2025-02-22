@@ -59,7 +59,11 @@ const Contact = () => {
         {/*  */}
         <div className="mt-10 flex flex-col md:flex-row justify-center items-center gap-5">
           <div className="md:w-1/2 hidden md:block">
-            <img className="max-w-[90%] mx-auto" src="https://i.ibb.co.com/DgkTQ0x3/5118759.jpg" alt="" />
+            <img
+              className="max-w-[90%] mx-auto"
+              src="https://i.ibb.co.com/DgkTQ0x3/5118759.jpg"
+              alt=""
+            />
           </div>
           {/* Contact Form */}
           <div className="w-full md:w-1/2">
