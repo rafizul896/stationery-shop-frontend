@@ -38,15 +38,26 @@ const productApi = baseApi.injectEndpoints({
       query: (params) => ({
         url: "/products/getAll/brands",
         method: "GET",
-        params
+        params,
       }),
       transformResponse: (response: TResponseRedux<string[]>) => {
         return {
           data: response.data,
         };
-      }
+      },
+    }),
+    getAProduct: builder.query({
+      query: (id) => ({
+        url: `/products/${id}`,
+        method: "GET",
+      }),
     }),
   }),
 });
 
-export const { useGetAllProductsQuery, useGetAllReviewsQuery,useGetAllbrandsQuery } = productApi;
+export const {
+  useGetAllProductsQuery,
+  useGetAllReviewsQuery,
+  useGetAllbrandsQuery,
+  useGetAProductQuery,
+} = productApi;

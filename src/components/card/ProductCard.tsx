@@ -1,9 +1,10 @@
 import { TProduct } from "@/types/product";
 import { Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }: { product: TProduct }) => {
   return (
-    <div className="border rounded-lg shadow-lg p-4 w-full">
+    <Link to={`/products/${product._id}`} className="border rounded-lg shadow-lg p-4 w-full">
       <img
         src={product?.imageUrl}
         alt={product?.name}
@@ -35,7 +36,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

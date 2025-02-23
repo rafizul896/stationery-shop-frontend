@@ -55,6 +55,20 @@ const ProductPage = () => {
 
   const brands = brandData?.data;
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  const handleBrandChange = (brand: string) => {
+    setSelectedBrands((prev) =>
+      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
+    );
+  };
+
   return (
     <div className="custom-container mt-10 grid grid-cols-1 md:grid-cols-4 md:gap-4">
       {/* Filters Section */}
@@ -104,8 +118,14 @@ const ProductPage = () => {
             >
               In Stock
             </label>
-            <Checkbox id="inStock" checked={inStock} /> In Stock
+            <Checkbox
+              id="inStock"
+              checked={inStock}
+              onClick={() => setInStock(!inStock)}
+            />{" "}
+            In Stock
           </div>
+          
           <div className="mt-4">
             <h2 className="text-lg font-semibold mb-2">Categories</h2>
             {categories?.map((category, index) => (
@@ -113,13 +133,7 @@ const ProductPage = () => {
                 <Checkbox
                   id={category}
                   checked={selectedCategories.includes(category)}
-                  onCheckedChange={() =>
-                    setSelectedCategories((prev) =>
-                      prev.includes(category)
-                        ? prev.filter((c) => c !== category)
-                        : [...prev, category]
-                    )
-                  }
+                  onCheckedChange={() => handleCategoryChange(category)}
                 />
                 <label htmlFor={category} className="ml-2">
                   {category}
@@ -127,6 +141,7 @@ const ProductPage = () => {
               </div>
             ))}
           </div>
+
           {brands && brands?.length > 0 && (
             <div className="mt-4">
               <h2 className="text-lg font-semibold mb-2">Brands</h2>
@@ -135,13 +150,7 @@ const ProductPage = () => {
                   <Checkbox
                     id={brand}
                     checked={selectedBrands.includes(brand)}
-                    onCheckedChange={() =>
-                      setSelectedBrands((prev) =>
-                        prev.includes(brand)
-                          ? prev.filter((b) => b !== brand)
-                          : [...prev, brand]
-                      )
-                    }
+                    onCheckedChange={() => handleBrandChange(brand)}
                   />
                   <label htmlFor={brand} className="ml-2">
                     {brand}
@@ -200,8 +209,8 @@ const ProductPage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-              {productData?.map((product, index) => (
-                <ProductCard product={product} key={index} />
+              {productData?.map((product) => (
+                <ProductCard product={product} key={product._id} />
               ))}
             </div>
           )}
