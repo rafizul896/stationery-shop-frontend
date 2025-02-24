@@ -6,34 +6,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAddProductMutation } from "@/redux/features/product/productApi";
+import { TResponse } from "@/types";
+import { TProduct } from "@/types/product";
 import { imageUpload } from "@/utils/imageUpload";
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { toast } from "react-toastify";
 import "tailwindcss/tailwind.css";
 
-type FormData = {
-  name: string;
-  brand: string;
-  price: number;
-  category: string;
-  description: string;
-  quantity: number;
-  inStock: boolean;
-  imageUrl: FileList;
-};
-
-const CreateProduct = () => {
+const AddProduct = () => {
   const [loading, setLoading] = useState(false);
+  const [addProduct] = useAddProductMutation();
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<TProduct>();
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setLoading(true);
     const imageFile = data.imageUrl[0];
 
@@ -45,9 +39,16 @@ const CreateProduct = () => {
         imageUrl,
       };
 
-      console.log(productData);
-      toast.success("Product added successfully!");
-      setLoading(false);
+      const res = (await addProduct(productData)) as TResponse<any>;
+      console.log(res);
+      if (res.error) {
+        toast.error(res.error.data.message);
+        setLoading(false);
+      } else {
+        toast.success("Product added successfully!");
+        reset();
+        setLoading(false);
+      }
     } catch (err) {
       if (err instanceof Error) {
         setLoading(false);
@@ -84,7 +85,7 @@ const CreateProduct = () => {
 
           {/* Price */}
           <FInput
-            label="Price"
+            label="Price ($)"
             type="number"
             placeholder="Enter price"
             register={register("price", {
@@ -95,7 +96,6 @@ const CreateProduct = () => {
           />
 
           {/* Category */}
-
           <div>
             <label className="text-gray-700 font-medium">Category</label>
             <Select onValueChange={(value) => setValue("category", value)}>
@@ -189,4 +189,4 @@ const CreateProduct = () => {
   );
 };
 
-export default CreateProduct;
+export default AddProduct;

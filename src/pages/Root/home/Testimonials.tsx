@@ -11,7 +11,7 @@ const Testimonials = () => {
   const { data } = useGetAllReviewsQuery(undefined);
 
   const reviews = data?.data;
-  console.log(reviews);
+
   return (
     <div className="custom-container">
       <SectionTitle

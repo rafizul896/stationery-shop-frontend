@@ -13,8 +13,8 @@ import Profile from "@/pages/Dashboard/user/Profile";
 import Orders from "@/pages/Dashboard/user/Orders";
 import ManageUsers from "@/pages/Dashboard/admin/user/ManageUsers";
 import ManageProducts from "@/pages/Dashboard/admin/product/ManageProducts";
-import CreateProduct from "@/pages/Dashboard/admin/product/CreateProduct";
 import ManageOrders from "@/pages/Dashboard/admin/order/ManageOrders";
+import AddProduct from "@/pages/Dashboard/admin/product/AddProduct";
 
 export const router = createBrowserRouter([
   {
@@ -75,8 +75,8 @@ export const router = createBrowserRouter([
         element: <ManageProducts />,
       },
       {
-        path: "create-product",
-        element: <CreateProduct />,
+        path: "add-product",
+        element: <AddProduct />,
       },
       {
         path: "manage-orders",

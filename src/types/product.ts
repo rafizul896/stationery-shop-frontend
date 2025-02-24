@@ -4,7 +4,7 @@ export type TProduct = {
   brand: string;
   category: string;
   price: number;
-  imageUrl: string;
+  imageUrl: string | File;
   description: string;
   averageRating: string;
   reviews: object[];

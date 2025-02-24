@@ -22,8 +22,9 @@ const productData = {
 const FeaturedProducts = () => {
   const { data } = useGetAllProductsQuery(undefined);
 
-  const product = data?.data[0];
+  const product = data?.data;
   console.log(product);
+
   return (
     <div className="custom-container">
       <SectionTitle
