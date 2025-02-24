@@ -7,8 +7,8 @@ const AdminMenu = () => {
     return (
         <>
             <MenuItem icon={FaUserCog} label='Manage Users' address='manage-users' />
-            <MenuItem icon={MdOutlineProductionQuantityLimits} label='Manage Products' address='manage-products' />
             <MenuItem icon={MdOutlineCreate} label='Create A Product' address='create-product' />
+            <MenuItem icon={MdOutlineProductionQuantityLimits} label='Manage Products' address='manage-products' />
             <MenuItem icon={RiTakeawayLine} label='Manage Orders' address='manage-orders' />
         </>
     )

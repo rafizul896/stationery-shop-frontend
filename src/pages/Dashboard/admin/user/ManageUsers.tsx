@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "react-toastify";
 import { TResponse } from "@/types";
+import Loader from "@/components/Shared/Loader";
 
 const ManageUsers = () => {
   const [page, setPage] = useState(1);
@@ -30,7 +31,7 @@ const ManageUsers = () => {
   const [status, setStatus] = useState("active");
   const [statusChange] = useStatusChangeMutation();
 
-  const { data } = useGetAllUsersQuery([
+  const { data, isLoading, isFetching } = useGetAllUsersQuery([
     { name: "page", value: page },
     { name: "limit", value: limit },
     { name: "searchTerm", value: searchTerm },
@@ -55,6 +56,14 @@ const ManageUsers = () => {
       }
     }
   };
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex justify-center items-center h-[400px]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div>

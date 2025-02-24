@@ -8,7 +8,7 @@ import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 const Sidebar = () => {
   const role = useAppSelector(selectCurrentUser)?.role;
-  const [isActive, setActive] = useState(false);
+  const [isActive, setActive] = useState(true);
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
