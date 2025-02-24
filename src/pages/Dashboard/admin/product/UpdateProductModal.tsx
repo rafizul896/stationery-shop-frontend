@@ -22,6 +22,7 @@ import { RxUpdate } from "react-icons/rx";
 import { TProduct } from "@/types/product";
 import { useUpdateProductMutation } from "@/redux/features/product/productApi";
 import { TResponse } from "@/types";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 export function UpdateProductModal({ product }: { product: TProduct }) {
   const [updatedProductData] = useUpdateProductMutation();
@@ -101,6 +102,7 @@ export function UpdateProductModal({ product }: { product: TProduct }) {
       <DialogContent className="max-w-[300px] sm:max-w-lg md:max-w-xl w-full h-[90vh] overflow-auto">
         <DialogHeader>
           <DialogTitle className="text-center">Update Product</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Name */}
