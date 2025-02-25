@@ -15,6 +15,7 @@ import ManageUsers from "@/pages/Dashboard/admin/user/ManageUsers";
 import ManageProducts from "@/pages/Dashboard/admin/product/ManageProducts";
 import ManageOrders from "@/pages/Dashboard/admin/order/ManageOrders";
 import AddProduct from "@/pages/Dashboard/admin/product/AddProduct";
+import Checkout from "@/pages/Root/cart/Checkout";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/Checkout",
+        element: <Checkout />,
       },
     ],
   },

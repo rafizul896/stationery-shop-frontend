@@ -12,4 +12,5 @@ export type TProduct = {
   createdAt: string;
   updatedAt: string;
   quantity: number;
+  cartQuantity?: number
 };

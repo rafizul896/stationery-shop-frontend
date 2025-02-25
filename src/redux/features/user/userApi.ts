@@ -21,14 +21,35 @@ const userApi = baseApi.injectEndpoints({
       providesTags: ["user"],
     }),
     statusChange: builder.mutation({
-      query: (data) => (console.log(data.status),{
-        url: `/admin/users/${data.userId}/block`,
-        method: "PATCH",
-        body: {status: data.status},
+      query: (data) => (
+        console.log(data.status),
+        {
+          url: `/admin/users/${data.userId}/block`,
+          method: "PATCH",
+          body: { status: data.status },
+        }
+      ),
+      invalidatesTags: ["user"],
+    }),
+    getAUser: builder.query({
+      query: (data) => ({
+        url: `/user/${data.email}`,
+        method: "GET",
       }),
-     invalidatesTags: ['user']
+    }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `/user/${data.email}`,
+        method: "PUT",
+        body: data.data,
+      }),
     }),
   }),
 });
 
-export const { useGetAllUsersQuery, useStatusChangeMutation } = userApi;
+export const {
+  useGetAllUsersQuery,
+  useStatusChangeMutation,
+  useGetAUserQuery,
+  useUpdateUserMutation,
+} = userApi;

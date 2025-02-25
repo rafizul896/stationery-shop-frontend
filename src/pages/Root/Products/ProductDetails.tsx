@@ -5,10 +5,14 @@ import { useParams } from "react-router-dom";
 import Loader from "@/components/Shared/Loader";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { Rating } from "@smastrom/react-rating";
+import { addToCart } from "@/redux/features/cart/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
+  const dispatch = useAppDispatch();
   const { productId } = useParams(); // to get the product id from the URL
-  const { data, isLoading,isFetching } = useGetAProductQuery(productId, {
+  const { data, isLoading, isFetching } = useGetAProductQuery(productId, {
     skip: !productId,
   });
   const [quantity, setQuantity] = useState(1);
@@ -17,6 +21,11 @@ const ProductDetails = () => {
 
   const handleIncrease = () => setQuantity((prev) => prev + 1);
   const handleDecrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, cartQuantity: quantity }));
+    toast.success(`${quantity} ${product.name} added to cart`);
+  };
 
   if (isLoading || isFetching) {
     return (
@@ -83,7 +92,11 @@ const ProductDetails = () => {
             </div>
 
             {/* Add to Cart Button */}
-            <CustomButton text="Add to Cart" className="w-full" />
+            <CustomButton
+              onClick={() => handleAddToCart()}
+              text="Add to Cart"
+              className="w-full"
+            />
           </div>
         </div>
       </div>

@@ -35,9 +35,13 @@ const links = [
 ];
 
 const Navbar = () => {
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
   const user = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
-  const unreadCount = 1;
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + (item.cartQuantity as number),
+    0
+  );
 
   return (
     <Disclosure as="nav">
@@ -92,6 +96,25 @@ const Navbar = () => {
 
           {/* Right Section ( Profile ) */}
           <div className="relative inset-y-0 right-0 flex  items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            {/* Cart dropdown */}
+            <Menu as="div" className="relative ml-3">
+              <>
+                <a href="/checkout">
+                  <MenuButton className="relative flex justify-center items-center rounded-full  text-sm">
+                    <span className="sr-only">Open user menu</span>
+                    <div className="md:mt-[5px] relative">
+                      <FiShoppingCart className="text-2xl  cursor-pointer" />
+                      {totalQuantity > 0 && (
+                        <p className="bg-secondary px-[5px] -right-1 -top-2 absolute rounded-full text-[12px]">
+                          {totalQuantity}
+                        </p>
+                      )}
+                    </div>
+                  </MenuButton>
+                </a>
+              </>
+            </Menu>
+
             {/* Account dropdown */}
             <Menu as="div" className="relative ml-3">
               {user ? (
@@ -137,32 +160,6 @@ const Navbar = () => {
                   </a>
                 </>
               )}
-            </Menu>
-
-            {/* Cart dropdown */}
-            <Menu as="div" className="relative ml-3">
-              <>
-                <div>
-                  <MenuButton className="relative flex justify-center items-center rounded-full  text-sm">
-                    <span className="sr-only">Open user menu</span>
-                    <div className="md:mt-[5px] relative">
-                      <FiShoppingCart className="text-2xl  cursor-pointer" />
-                      {unreadCount > 0 && (
-                        <p className=" bg-secondary px-[6px] -top-2 absolute rounded-full text-[10px]">
-                          {unreadCount}
-                        </p>
-                      )}
-                    </div>
-                  </MenuButton>
-                </div>
-                <MenuItems className="absolute text-gray-800  text-sm bg-accent -right-[0px] md:right-0 z-50 mt-[24px] md:mt-[20px] w-[300px] h-[300px] overflow-y-auto rounded-md shadow-lg">
-                  <MenuItem>
-                    <div>
-                      <h1>hello</h1>
-                    </div>
-                  </MenuItem>
-                </MenuItems>
-              </>
             </Menu>
           </div>
         </div>
