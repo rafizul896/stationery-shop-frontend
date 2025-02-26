@@ -16,6 +16,7 @@ import ManageProducts from "@/pages/Dashboard/admin/product/ManageProducts";
 import ManageOrders from "@/pages/Dashboard/admin/order/ManageOrders";
 import AddProduct from "@/pages/Dashboard/admin/product/AddProduct";
 import Checkout from "@/pages/Root/cart/Checkout";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -53,7 +54,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/Checkout",
-        element: <Checkout />,
+        element: (
+          <PrivateRoute role="user">
+            <Checkout />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -64,28 +69,52 @@ export const router = createBrowserRouter([
       // user
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <PrivateRoute role="user">
+            <Profile />
+          </PrivateRoute>
+        ),
       },
       {
         path: "orders",
-        element: <Orders />,
+        element: (
+          <PrivateRoute role="user">
+            <Orders />
+          </PrivateRoute>
+        ),
       },
       // admin
       {
         path: "manage-users",
-        element: <ManageUsers />,
+        element: (
+          <PrivateRoute role="admin">
+            <ManageUsers />
+          </PrivateRoute>
+        ),
       },
       {
         path: "manage-products",
-        element: <ManageProducts />,
+        element: (
+          <PrivateRoute role="admin">
+            <ManageProducts />
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-product",
-        element: <AddProduct />,
+        element: (
+          <PrivateRoute role="admin">
+            <AddProduct />
+          </PrivateRoute>
+        ),
       },
       {
         path: "manage-orders",
-        element: <ManageOrders />,
+        element: (
+          <PrivateRoute role="admin">
+            <ManageOrders />
+          </PrivateRoute>
+        ),
       },
     ],
   },

@@ -1,4 +1,5 @@
 import {
+  clearCart,
   removeFromCart,
   updateQuantity,
 } from "@/redux/features/cart/cartSlice";
@@ -17,6 +18,13 @@ import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetAUserQuery } from "@/redux/features/user/userApi";
+import { useCreateOrderMutation } from "@/redux/features/order/orderApi";
+import { toast } from "react-toastify";
+import { TResponse } from "@/types";
+import { TbFidgetSpinner } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
+import { TProduct } from "@/types/product";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_Publishable_key);
 
@@ -30,13 +38,17 @@ const Checkout = () => {
     useState<TShippingAddressFormValues>();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const dispatch = useAppDispatch();
+  const [createOrder] = useCreateOrderMutation();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [isValid, setIsValid] = useState(false);
 
   const subTotal = cartItems.reduce(
     (total, item) => total + item?.price * (item?.cartQuantity as number),
     0
   );
 
-  const cartProducts = cartItems.map((product) => ({
+  const cartProducts = cartItems.map((product: TProduct) => ({
     product: product._id,
     quantity: product.cartQuantity,
     price: product.price,
@@ -50,11 +62,6 @@ const Checkout = () => {
     setShippingAddressdata(data);
   };
 
-  const handleCashOnDelivery = () => {
-    console.log(shippingAddressdata);
-  };
-
-
   const orderInfo = {
     user: data?.data?._id,
     products: cartProducts,
@@ -66,38 +73,53 @@ const Checkout = () => {
     paymentStatus: paymentMethod === "Card" ? "Paid" : "Pending",
   };
 
-  return (
-    <div className="custom-container mt-10 grid grid-cols-1 md:grid-cols-4 md:gap-5">
-      <div className="md:col-span-2 md:border md:p-5 rounded-md">
-        {/* Shipping Form */}
+  const handleCashOnDelivery = async () => {
+    const res = (await createOrder(orderInfo)) as TResponse<any>;
+    console.log(res);
+    if (res.error) {
+      toast.error(res.error.data.message);
+      setLoading(false);
+    } else {
+      dispatch(clearCart());
 
+      toast.success("Order created successfully");
+      navigate("/dashboard/orders");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="custom-container mt-10 flex flex-col-reverse md:flex-row gap-10 md:gap-5">
+      <div className="flex-1 md:border md:p-5 rounded-md">
+        {/* Shipping Form */}
         <ShippingAddressForm
           ref={formRef}
           onSubmit={handleFormSubmit}
           shippingAddress={shippingAddress}
+          setIsValid={setIsValid}
         />
 
         <div>
           {/* Shipping Cost */}
           <Card className="space-y-4 mt-5 shadow-none border-none">
-            <h2 className="text-xl font-bold mt-5">02. Shipping Cost</h2>
+            <h2 className="text-lg font-bold mt-5">02. Shipping Cost</h2>
             <RadioGroup
               defaultValue="5"
               onValueChange={(value) => setShippingCost(Number(value))}
             >
               <div className="flex flex-col lg:flex-row gap-4 ml-3 lg:ml-0">
-                <button onClick={() => formRef.current?.submit()}>
+                <div>
                   <RadioGroupItem id="5" value="5" />{" "}
                   <label className="cursor-pointer" htmlFor="5">
                     Today Delivery ($10)
                   </label>
-                </button>
-                <button onClick={() => formRef.current?.submit()}>
+                </div>
+                <div>
                   <RadioGroupItem id="3" value="3" />{" "}
-                  <label className="cursor-pointer" htmlFor="10">
+                  <label className="cursor-pointer" htmlFor="3">
                     3 Days Delivery ($3)
                   </label>
-                </button>
+                </div>
               </div>
             </RadioGroup>
           </Card>
@@ -105,14 +127,17 @@ const Checkout = () => {
 
         {/* Payment Method */}
         <Card className="space-y-4 mt-5 shadow-none border-none">
-          <h2 className="text-xl font-bold mt-5">03. Payment Method</h2>
+          <h2 className="text-lg font-bold mt-5">03. Payment Method</h2>
           <RadioGroup
             defaultValue="Cash on Delivery"
             onValueChange={(value) => setPaymentMethod(value)}
           >
-            <div className="flex flex-col lg:flex-row gap-4 ml-3 lg:ml-0">
+            <div className="flex gap-4 ml-3 lg:ml-0">
               <button onClick={() => formRef.current?.submit()}>
-                <RadioGroupItem id="Cash on Delivery" value="Cash on Delivery" />{" "}
+                <RadioGroupItem
+                  id="Cash on Delivery"
+                  value="Cash on Delivery"
+                />{" "}
                 <label className="cursor-pointer" htmlFor="Cash on Delivery">
                   Cash On Delivery
                 </label>
@@ -134,20 +159,32 @@ const Checkout = () => {
               handleCashOnDelivery();
             }}
             className="w-full mt-4"
+            disabled={!isValid || !(cartProducts.length > 0)}
           >
-            Confirm Order{" "}
+            {loading === true ? (
+              <TbFidgetSpinner className="animate-spin m-auto " />
+            ) : (
+              "Confirm Order"
+            )}
           </Button>
         ) : (
           <Elements stripe={stripePromise}>
-            <CheckoutForm formRef={formRef} orderInfo={orderInfo} />
+            <CheckoutForm
+              isValid={isValid}
+              formRef={formRef}
+              orderInfo={orderInfo}
+            />
           </Elements>
         )}
       </div>
 
-      <div className="md:col-span-2 md:border  md:p-5 rounded-md  mt-5 md:mt-0">
+      <div className="flex-1 md:border  md:p-5 rounded-md">
         <h1 className="text-xl font-bold mb-4">Cart Summary</h1>
         {cartItems.length === 0 ? (
-          <p className="text-gray-600">Your cart is empty!</p>
+          <div className="flex flex-col justify-center items-center gap-3">
+            <MdOutlineProductionQuantityLimits className="text-5xl" />
+            <p className="text-gray-600">Your cart is empty!</p>
+          </div>
         ) : (
           <div className="md:space-y-3">
             {cartItems.map((item) => (
@@ -214,15 +251,15 @@ const Checkout = () => {
             ))}
             <div>
               <div className="mt-4 flex justify-between">
-                <p>SubTotal</p>
+                <p className="text-sm">SubTotal</p>
                 <p>${subTotal.toFixed(2)}</p>
               </div>
               <div className="mt-4 flex justify-between">
-                <p>Shipping Cost</p>
+                <p className="text-sm">Shipping Cost</p>
                 <p>${shippingCost}</p>
               </div>
               <div className="mt-4 pt-2 flex justify-between border-t-2 ">
-                <p className="font-semibold font-heading">TOTAL COST</p>
+                <p className="font-semibold text-sm font-heading">TOTAL COST</p>
                 <p>${totalConst}</p>
               </div>
             </div>

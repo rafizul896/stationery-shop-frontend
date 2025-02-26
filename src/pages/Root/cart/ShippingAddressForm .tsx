@@ -14,17 +14,24 @@ export type TShippingAddressFormValues = {
 interface ShippingAddressFormProps {
   onSubmit: (data: TShippingAddressFormValues) => void;
   shippingAddress?: TShippingAddressFormValues;
+  setIsValid?: (isValid: boolean) => void; //  New prop to control the button state
 }
 
-// 🎯 Forward Ref to expose `submit` method
+// Forward Ref to expose `submit` method
 const ShippingAddressForm = forwardRef(
-  ({ onSubmit, shippingAddress }: ShippingAddressFormProps, ref) => {
+  (
+    { onSubmit, shippingAddress, setIsValid }: ShippingAddressFormProps,
+    ref
+  ) => {
     const {
       register,
       handleSubmit,
       reset,
-      formState: { errors },
+      watch,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      formState: { errors, isValid },
     } = useForm<TShippingAddressFormValues>({
+      mode: "onChange", // Enables real-time validation
       defaultValues: shippingAddress,
     });
 
@@ -34,15 +41,25 @@ const ShippingAddressForm = forwardRef(
       }
     }, [shippingAddress, reset]);
 
+    // Watch all form fields
+    const watchFields = watch();
+
+    // Check if all fields are filled
+    useEffect(() => {
+      const allFieldsFilled = Object.values(watchFields).every(
+        (value) => value !== "" && value !== undefined
+      );
+      setIsValid?.(allFieldsFilled);
+    }, [watchFields, setIsValid]);
+
     useImperativeHandle(ref, () => ({
       submit: () => handleSubmit(onSubmit)(),
     }));
 
     return (
       <form>
-        <h2 className="text-xl font-bold mb-5">01. Shipping Address</h2>
+        <h2 className="text-lg font-bold mb-5">01. Shipping Address</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Full Name */}
           <FInput
             label="Full Name"
             type="text"
@@ -52,8 +69,6 @@ const ShippingAddressForm = forwardRef(
             })}
             error={errors?.fullName?.message as string}
           />
-
-          {/* Address */}
           <FInput
             label="Address"
             type="text"
@@ -61,8 +76,6 @@ const ShippingAddressForm = forwardRef(
             register={register("address", { required: "Address is required." })}
             error={errors?.address?.message as string}
           />
-
-          {/* City */}
           <FInput
             label="City"
             type="text"
@@ -70,8 +83,6 @@ const ShippingAddressForm = forwardRef(
             register={register("city", { required: "City is required." })}
             error={errors?.city?.message as string}
           />
-
-          {/* Postal Code */}
           <FInput
             label="Postal Code"
             type="text"
@@ -81,8 +92,6 @@ const ShippingAddressForm = forwardRef(
             })}
             error={errors?.postalCode?.message as string}
           />
-
-          {/* Country */}
           <FInput
             label="Country"
             type="text"
@@ -90,8 +99,6 @@ const ShippingAddressForm = forwardRef(
             register={register("country", { required: "Country is required." })}
             error={errors?.country?.message as string}
           />
-
-          {/* Contact Number */}
           <FInput
             label="Contact Number"
             type="number"

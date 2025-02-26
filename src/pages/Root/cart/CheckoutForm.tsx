@@ -17,9 +17,14 @@ import { toast } from "react-toastify";
 type CheckoutFormProps = {
   orderInfo?: any;
   formRef?: any;
+  isValid: boolean;
 };
 
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ orderInfo, formRef }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({
+  orderInfo,
+  formRef,
+  isValid,
+}) => {
   const email = useAppSelector(selectCurrentUser)?.email;
   const stripe = useStripe();
   const elements = useElements();
@@ -89,11 +94,9 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ orderInfo, formRef }) => {
             ...orderInfo,
             transactionId: paymentIntent.id,
           };
-          
+
           dispatch(clearCart());
           const res = (await createOrder(paymentInfo)) as TResponse<any>;
-          console.log("=>", res);
-          console.log(paymentInfo);
 
           if (res.error) {
             toast.error(res.error.data.message);
@@ -133,11 +136,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ orderInfo, formRef }) => {
           onClick={() => formRef.current?.submit()}
           className="w-full"
           disabled={
-            !stripe ||
-            !orderInfo?.shippingAddress?.address ||
-            !orderInfo?.shippingAddress?.contactNumber ||
-            !orderInfo?.products?.length ||
-            loading
+            !stripe || !(orderInfo?.products?.length > 0) || loading || !isValid
           }
         >
           {loading === true ? (

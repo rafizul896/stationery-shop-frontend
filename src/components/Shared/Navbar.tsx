@@ -114,7 +114,7 @@ const Navbar = () => {
             </Menu>
 
             {/* Account dropdown */}
-            <Menu as="div" className="relative ml-3">
+            <Menu as="div" className="relative ml-5">
               {user ? (
                 <>
                   <div>
@@ -129,7 +129,11 @@ const Navbar = () => {
                     <div className="px-3">
                       <MenuItem>
                         <Link
-                          to="/dashboard"
+                          to={
+                            user.role === "user"
+                              ? "/dashboard/profile"
+                              : "/dashboard/manage-users"
+                          }
                           className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors duration-200"
                         >
                           My Dashboards
