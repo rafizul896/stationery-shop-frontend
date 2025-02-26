@@ -17,11 +17,9 @@ import {
 import CustomPagination from "@/components/Shared/Pagination";
 import Loader from "@/components/Shared/Loader";
 import { useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { TResponse } from "@/types";
 import {
-  useDeleteOrderMutation,
   useGetAllOrdersQuery,
   useUpdateOrderMutation,
 } from "@/redux/features/order/orderApi";
@@ -31,10 +29,7 @@ import { TbBounceRightFilled } from "react-icons/tb";
 const ManageOrders = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [deleteOrder] = useDeleteOrderMutation();
   const [approveOrder] = useUpdateOrderMutation();
-
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
 
   const { data, isLoading, isFetching } = useGetAllOrdersQuery([
@@ -43,22 +38,6 @@ const ManageOrders = () => {
   ]);
   const orderData = data?.data;
   const totalPage = data?.meta?.totalPage || 1;
-
-  const handleDeleteOrder = async (id: string) => {
-    try {
-      const res = (await deleteOrder({ orderId: id })) as TResponse<any>;
-      if (res.error) {
-        toast.error(res.error.data.message);
-      } else {
-        toast.success(res.message || "Product deleted successfully");
-      }
-      console.log(res);
-    } catch (err) {
-      if (err instanceof Error) {
-        toast.error(err.message);
-      }
-    }
-  };
 
   const handleApproveOrder = async (id: string) => {
     const orderData = {
@@ -163,58 +142,6 @@ const ManageOrders = () => {
                         </DialogContent>
                       </Dialog>
                     )}
-                  </div>
-
-                  {/* for delete order */}
-                  <div id="page-contents" inert={isDeleteDialogOpen}>
-                    <Dialog
-                      open={isDeleteDialogOpen}
-                      onOpenChange={setIsDeleteDialogOpen}
-                    >
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="ml-2"
-                          onClick={() => {
-                            setIsDeleteDialogOpen(true);
-                          }}
-                        >
-                          <AiOutlineDelete className="text-lg hover:text-red-500" />
-                        </Button>
-                      </DialogTrigger>
-                      {isDeleteDialogOpen && (
-                        <DialogContent className="max-w-md">
-                          <DialogHeader>
-                            <DialogTitle>Delete Order</DialogTitle>
-                            <DialogDescription></DialogDescription>
-                          </DialogHeader>
-
-                          <p>
-                            Are you sure you want to <strong>delete</strong> the
-                            order for <strong>{order.user.name}</strong>?
-                          </p>
-                          <div className="flex justify-end mt-4">
-                            <Button
-                              variant="outline"
-                              onClick={() => setIsDeleteDialogOpen(false)}
-                              className="mr-2"
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              variant="destructive"
-                              onClick={() => (
-                                setIsDeleteDialogOpen(false),
-                                handleDeleteOrder(order._id)
-                              )}
-                            >
-                              Delete
-                            </Button>
-                          </div>
-                        </DialogContent>
-                      )}
-                    </Dialog>
                   </div>
                 </TableCell>
               </TableCell>

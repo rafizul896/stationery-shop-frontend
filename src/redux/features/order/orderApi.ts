@@ -27,13 +27,6 @@ const orderApi = baseApi.injectEndpoints({
       },
       providesTags: ["order"],
     }),
-    deleteOrder: builder.mutation({
-      query: (data) => ({
-        url: `/orders/${data.orderId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["order"],
-    }),
     updateOrder: builder.mutation({
       query: (data) => (
         console.log(data),
@@ -45,11 +38,26 @@ const orderApi = baseApi.injectEndpoints({
       ),
       invalidatesTags: ["order"],
     }),
+    createPaymentIntent: builder.mutation({
+      query: (data) => ({
+        url: "/create-payment-intent",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    createOrder: builder.mutation({
+      query: (data) => ({
+        url: "/orders",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllOrdersQuery,
-  useDeleteOrderMutation,
   useUpdateOrderMutation,
+  useCreatePaymentIntentMutation,
+  useCreateOrderMutation,
 } = orderApi;

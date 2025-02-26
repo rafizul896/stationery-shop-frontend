@@ -7,38 +7,40 @@ import { AiOutlineDelete } from "react-icons/ai";
 import ShippingAddressForm, {
   TShippingAddressFormValues,
 } from "./ShippingAddressForm ";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import CartSummaryModal from "./CartSummaryModal";
 import { Button } from "@/components/ui/button";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutForm from "./CheckoutForm";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useGetAUserQuery } from "@/redux/features/user/userApi";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_Publishable_key);
+
 const Checkout = () => {
-  const [shippingCost, setShippingCost] = useState(20);
-  const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const email = useAppSelector(selectCurrentUser)?.email;
+  const { data } = useGetAUserQuery({ email });
+  const shippingAddress = data?.data?.shippingAddress;
+  const [shippingCost, setShippingCost] = useState(5);
+  const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
   const [shippingAddressdata, setShippingAddressdata] =
     useState<TShippingAddressFormValues>();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const dispatch = useAppDispatch();
 
-  const [clientSecret, setClientSecret] = useState(
-    "pi_3QwMWNAjUyxa0ThH02aWpZPO_secret_QY3ey3kvFd8XQfTQAEnR8QKwr"
-  );
-
-  useEffect(() => {
-    fetch("http://localhost:5000/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 5000 }), // Amount in cents
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data?.clientSecret));
-  }, []);
-
   const subTotal = cartItems.reduce(
     (total, item) => total + item?.price * (item?.cartQuantity as number),
     0
   );
+
+  const cartProducts = cartItems.map((product) => ({
+    product: product._id,
+    quantity: product.cartQuantity,
+    price: product.price,
+  }));
 
   const totalConst = subTotal + shippingCost;
 
@@ -52,34 +54,50 @@ const Checkout = () => {
     console.log(shippingAddressdata);
   };
 
+
+  const orderInfo = {
+    user: data?.data?._id,
+    products: cartProducts,
+    totalAmount: totalConst,
+    shippingAddress: shippingAddressdata,
+    status: "Pending",
+    paymentMethod,
+    deliveryType: shippingCost === 5 ? "Today" : "Three Days",
+    paymentStatus: paymentMethod === "Card" ? "Paid" : "Pending",
+  };
+
   return (
     <div className="custom-container mt-10 grid grid-cols-1 md:grid-cols-4 md:gap-5">
       <div className="md:col-span-2 md:border md:p-5 rounded-md">
         {/* Shipping Form */}
 
-        <ShippingAddressForm ref={formRef} onSubmit={handleFormSubmit} />
+        <ShippingAddressForm
+          ref={formRef}
+          onSubmit={handleFormSubmit}
+          shippingAddress={shippingAddress}
+        />
 
         <div>
           {/* Shipping Cost */}
           <Card className="space-y-4 mt-5 shadow-none border-none">
             <h2 className="text-xl font-bold mt-5">02. Shipping Cost</h2>
             <RadioGroup
-              defaultValue="20"
+              defaultValue="5"
               onValueChange={(value) => setShippingCost(Number(value))}
             >
               <div className="flex flex-col lg:flex-row gap-4 ml-3 lg:ml-0">
-                <div>
-                  <RadioGroupItem id="20" value="20" />{" "}
-                  <label className="cursor-pointer" htmlFor="20">
-                    Today Delivery ($20)
+                <button onClick={() => formRef.current?.submit()}>
+                  <RadioGroupItem id="5" value="5" />{" "}
+                  <label className="cursor-pointer" htmlFor="5">
+                    Today Delivery ($10)
                   </label>
-                </div>
-                <div>
-                  <RadioGroupItem id="10" value="10" />{" "}
+                </button>
+                <button onClick={() => formRef.current?.submit()}>
+                  <RadioGroupItem id="3" value="3" />{" "}
                   <label className="cursor-pointer" htmlFor="10">
-                    3 Days Delivery ($10)
+                    3 Days Delivery ($3)
                   </label>
-                </div>
+                </button>
               </div>
             </RadioGroup>
           </Card>
@@ -89,27 +107,27 @@ const Checkout = () => {
         <Card className="space-y-4 mt-5 shadow-none border-none">
           <h2 className="text-xl font-bold mt-5">03. Payment Method</h2>
           <RadioGroup
-            defaultValue="Cash"
+            defaultValue="Cash on Delivery"
             onValueChange={(value) => setPaymentMethod(value)}
           >
             <div className="flex flex-col lg:flex-row gap-4 ml-3 lg:ml-0">
-              <div>
-                <RadioGroupItem id="Cash" value="Cash" />{" "}
-                <label className="cursor-pointer" htmlFor="Cash">
+              <button onClick={() => formRef.current?.submit()}>
+                <RadioGroupItem id="Cash on Delivery" value="Cash on Delivery" />{" "}
+                <label className="cursor-pointer" htmlFor="Cash on Delivery">
                   Cash On Delivery
                 </label>
-              </div>
-              <div>
+              </button>
+              <button onClick={() => formRef.current?.submit()}>
                 <RadioGroupItem id="Card" value="Card" />{" "}
                 <label className="cursor-pointer" htmlFor="Card">
                   Credit Card
                 </label>
-              </div>
+              </button>
             </div>
           </RadioGroup>
         </Card>
 
-        {paymentMethod === "Cash" ? (
+        {paymentMethod === "Cash on Delivery" ? (
           <Button
             onClick={() => {
               formRef.current?.submit();
@@ -117,12 +135,15 @@ const Checkout = () => {
             }}
             className="w-full mt-4"
           >
-            Order Now
+            Confirm Order{" "}
           </Button>
         ) : (
-          <CartSummaryModal formRef={formRef} clientSecret={clientSecret} />
+          <Elements stripe={stripePromise}>
+            <CheckoutForm formRef={formRef} orderInfo={orderInfo} />
+          </Elements>
         )}
       </div>
+
       <div className="md:col-span-2 md:border  md:p-5 rounded-md  mt-5 md:mt-0">
         <h1 className="text-xl font-bold mb-4">Cart Summary</h1>
         {cartItems.length === 0 ? (

@@ -1,7 +1,4 @@
 import FInput from "@/components/form/FInput";
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useGetAUserQuery } from "@/redux/features/user/userApi";
-import { useAppSelector } from "@/redux/hooks";
 import { forwardRef, useEffect, useImperativeHandle } from "react";
 import { useForm } from "react-hook-form";
 
@@ -16,28 +13,26 @@ export type TShippingAddressFormValues = {
 
 interface ShippingAddressFormProps {
   onSubmit: (data: TShippingAddressFormValues) => void;
+  shippingAddress?: TShippingAddressFormValues;
 }
 
 // 🎯 Forward Ref to expose `submit` method
 const ShippingAddressForm = forwardRef(
-  ({ onSubmit }: ShippingAddressFormProps, ref) => {
-    const email = useAppSelector(selectCurrentUser)?.email;
-    const { data } = useGetAUserQuery({ email });
-
+  ({ onSubmit, shippingAddress }: ShippingAddressFormProps, ref) => {
     const {
       register,
       handleSubmit,
       reset,
       formState: { errors },
     } = useForm<TShippingAddressFormValues>({
-      defaultValues: data?.data?.shippingAddress,
+      defaultValues: shippingAddress,
     });
 
     useEffect(() => {
-      if (data?.data?.shippingAddress) {
-        reset(data.data.shippingAddress);
+      if (shippingAddress) {
+        reset(shippingAddress);
       }
-    }, [data, reset]);
+    }, [shippingAddress, reset]);
 
     useImperativeHandle(ref, () => ({
       submit: () => handleSubmit(onSubmit)(),

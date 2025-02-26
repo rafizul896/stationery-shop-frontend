@@ -12,7 +12,7 @@ import {
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FiShoppingCart } from "react-icons/fi";
 import { MdAccountCircle } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const links = [
   {
@@ -98,21 +98,19 @@ const Navbar = () => {
           <div className="relative inset-y-0 right-0 flex  items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Cart dropdown */}
             <Menu as="div" className="relative ml-3">
-              <>
-                <a href="/checkout">
-                  <MenuButton className="relative flex justify-center items-center rounded-full  text-sm">
-                    <span className="sr-only">Open user menu</span>
-                    <div className="md:mt-[5px] relative">
-                      <FiShoppingCart className="text-2xl  cursor-pointer" />
-                      {totalQuantity > 0 && (
-                        <p className="bg-secondary px-[5px] -right-1 -top-2 absolute rounded-full text-[12px]">
-                          {totalQuantity}
-                        </p>
-                      )}
-                    </div>
-                  </MenuButton>
-                </a>
-              </>
+              <Link
+                to="/checkout"
+                className="relative flex justify-center items-center rounded-full  text-sm"
+              >
+                <div className="md:mt-[5px] relative">
+                  <FiShoppingCart className="text-2xl  cursor-pointer" />
+                  {totalQuantity > 0 && (
+                    <p className="bg-secondary px-[5px] -right-1 -top-2 absolute rounded-full text-[12px]">
+                      {totalQuantity}
+                    </p>
+                  )}
+                </div>
+              </Link>
             </Menu>
 
             {/* Account dropdown */}
@@ -130,12 +128,12 @@ const Navbar = () => {
                   <MenuItems className="absolute border right-0 z-50 mt-4 w-[250px] origin-top-right rounded-md bg-white py-1 shadow-lg ring- ring-blac ring-opacity-5 focus:outline-none">
                     <div className="px-3">
                       <MenuItem>
-                        <a
-                          href="/dashboard"
+                        <Link
+                          to="/dashboard"
                           className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 transition-colors duration-200"
                         >
                           My Dashboards
-                        </a>
+                        </Link>
                       </MenuItem>
                       {/* Divider */}
                       <div className="border-t border-gray-200"></div>
@@ -152,12 +150,12 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <a
-                    href={"/login"}
+                  <Link
+                    to={"/login"}
                     className="px-3 md:px-6 py-[7px] brder bg-secondary  rounded-full"
                   >
                     Login
-                  </a>
+                  </Link>
                 </>
               )}
             </Menu>
