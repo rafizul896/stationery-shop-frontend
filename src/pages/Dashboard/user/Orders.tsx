@@ -46,7 +46,10 @@ const Orders = () => {
 
   return (
     <div>
-      <Table className="min-w-[600px] overflow-scroll">
+      <h2 className="text-2xl text-gray-800 md:text-3xl font-semibold text-center font-heading">
+        Orders
+      </h2>
+      <Table className="min-w-[600px] overflow-scroll mt-5">
         <TableHeader>
           <TableRow>
             <TableHead>Order Date</TableHead>

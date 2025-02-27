@@ -36,8 +36,8 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="custom-container mt-5 md:mt-10">
-      <div className="flex gap-5 bg-primary/5 p-4 flex-col md:flex-row items-center">
+    <div className="custom-container mt-5">
+      <div className="flex gap-5 p-4 flex-col md:flex-row items-center">
         {/* product-image */}
         <div className="w-full md:w-1/2">
           <img

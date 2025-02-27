@@ -5,7 +5,7 @@ import { IoReceiptOutline } from "react-icons/io5";
 const UserMenu = () => {
   return (
     <>
-      <MenuItem icon={ImProfile} label="Profile" address="profile" />
+      <MenuItem icon={ImProfile} label="Manage Profile" address="profile" />
       <MenuItem icon={IoReceiptOutline} label="Orders" address="orders" />
     </>
   );

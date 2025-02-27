@@ -9,7 +9,6 @@ import About from "@/pages/Root/about/About";
 import Contact from "@/pages/Root/contact/Contact";
 import ProductDetails from "@/pages/Root/Products/ProductDetails";
 import DashBoard from "@/layout/DashBoard";
-import Profile from "@/pages/Dashboard/user/Profile";
 import Orders from "@/pages/Dashboard/user/Orders";
 import ManageUsers from "@/pages/Dashboard/admin/user/ManageUsers";
 import ManageProducts from "@/pages/Dashboard/admin/product/ManageProducts";
@@ -17,6 +16,7 @@ import ManageOrders from "@/pages/Dashboard/admin/order/ManageOrders";
 import AddProduct from "@/pages/Dashboard/admin/product/AddProduct";
 import Checkout from "@/pages/Root/cart/Checkout";
 import PrivateRoute from "./PrivateRoute";
+import ManageProfile from "@/pages/Dashboard/user/ManageProfile";
 
 export const router = createBrowserRouter([
   {
@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
         path: "profile",
         element: (
           <PrivateRoute role="user">
-            <Profile />
+            <ManageProfile />
           </PrivateRoute>
         ),
       },

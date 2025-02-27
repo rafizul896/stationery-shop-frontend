@@ -181,7 +181,7 @@ const ProductPage = () => {
 
       {/* Products Display Section */}
       <div className="col-span-3">
-        <div className="mb-3 border flex flex-col gap-3 md:gap-0 md:flex-row items-center justify-between bg-gray-100 p-3 rounded-md">
+        <div className="mb-3 border flex flex-col gap-3 md:gap-0 md:flex-row items-center justify-between bg-primary/5 p-3 rounded-md">
           {/* Search Term */}
           <p className="text-lg font-medium">Products</p>
 

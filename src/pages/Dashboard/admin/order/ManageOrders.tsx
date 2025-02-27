@@ -72,27 +72,31 @@ const ManageOrders = () => {
       <Table className="min-w-[600px] overflow-scroll">
         <TableHeader>
           <TableRow>
-            <TableHead>Customer</TableHead>
-            <TableHead>Product</TableHead>
+            <TableHead>Order Date</TableHead>
+            <TableHead>Customer Name</TableHead>
             <TableHead>TotalPrice</TableHead>
-            <TableHead>Quantity</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
+            <TableHead>Approve orders</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {orderData?.map((order: any) => (
             <TableRow key={order?._id}>
-              <TableCell className="font-medium">{order?.user?.name}</TableCell>
-              <TableCell className="font-medium">
-                {order?.product?.name}
+              <TableCell>
+                {order?.createdAt
+                  ? new Date(order.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "N/A"}
               </TableCell>
-              <TableCell>{order?.totalPrice}</TableCell>
-              <TableCell>{order?.quantity}</TableCell>
+              <TableCell className="font-medium">{order?.user?.name}</TableCell>
+              <TableCell>{order?.totalAmount.toFixed(2)}</TableCell>
               <TableCell>{order?.status}</TableCell>
-              <TableCell className="text-center">
+              <TableCell  className="flex justify-center">
                 {/* for approve order */}
-                <TableCell className="flex">
+                <TableCell>
                   <div id="page-content" inert={isApproveDialogOpen}>
                     {order.status === "Pending" && (
                       <Dialog

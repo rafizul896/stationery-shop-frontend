@@ -78,7 +78,7 @@ const Footer = () => {
               </li>
               <li>
                 <a rel="noopener noreferrer" href="#">
-                  Support: rafizul896@gmail.com
+                  Support: stationery.store@gmail.com
                 </a>
               </li>
               <li className="flex gap-1">

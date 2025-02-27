@@ -111,7 +111,7 @@ const Checkout = () => {
                 <div>
                   <RadioGroupItem id="5" value="5" />{" "}
                   <label className="cursor-pointer text-sm" htmlFor="5">
-                    Today Delivery ($10)
+                    Today Delivery ($5)
                   </label>
                 </div>
                 <div>

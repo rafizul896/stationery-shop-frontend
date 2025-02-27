@@ -75,9 +75,9 @@ export function UpdateProductModal({ product }: { product: TProduct }) {
 
   // 🔹 Handle Form Submission
   const onSubmit = async (data: TProduct) => {
-    // onUpdate(data);
+    const updateData = { ...data, price: Number(data?.price) };
     try {
-      const res = (await updatedProductData(data)) as TResponse<any>;
+      const res = (await updatedProductData(updateData)) as TResponse<any>;
 
       if (res.error) {
         toast.error(res.error.data.message);
@@ -128,7 +128,7 @@ export function UpdateProductModal({ product }: { product: TProduct }) {
           {/* Price */}
           <FInput
             label="Price ($)"
-            type="number"
+            type="text"
             placeholder="Enter price"
             register={register("price", {
               required: "Price is required.",

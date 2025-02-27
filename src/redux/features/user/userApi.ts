@@ -41,7 +41,7 @@ const userApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: `/user/${data.email}`,
         method: "PUT",
-        body: data.data,
+        body: { shippingAddress: data.shippingAddress },
       }),
     }),
   }),

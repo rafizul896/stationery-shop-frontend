@@ -15,7 +15,7 @@ interface ErrorResponse {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api",
+  baseUrl: "https://stationery-shop-backend-blush.vercel.app/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -51,7 +51,7 @@ const custombaseQuery: BaseQueryFn<
   }
 
   if (result?.error?.status === 444) {
-    const res = await fetch("http://localhost:5000/api/auth/refresh-token", {
+    const res = await fetch("https://stationery-shop-backend-blush.vercel.app/api/auth/refresh-token", {
       method: "POST",
       credentials: "include",
     });
