@@ -3,10 +3,11 @@ import { GrLogout } from "react-icons/gr";
 import { AiOutlineBars } from "react-icons/ai";
 import AdminMenu from "./Menu/AdminMenu ";
 import UserMenu from "./Menu/UserMenu";
-import { useAppSelector } from "@/redux/hooks";
-import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 const Sidebar = () => {
+  const dispatch = useAppDispatch();
   const role = useAppSelector(selectCurrentUser)?.role;
   const [isActive, setActive] = useState(true);
   // Sidebar Responsive Handler
@@ -75,8 +76,8 @@ const Sidebar = () => {
         <div>
           <hr />
           <button
-            // onClick={logOut}
-            className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform"
+            onClick={() => dispatch(logout())}
+            className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:text-red-500 transition-colors duration-300 transform"
           >
             <GrLogout className="w-5 h-5" />
             <span className="mx-4 font-medium">Logout</span>

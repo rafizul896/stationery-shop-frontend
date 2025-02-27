@@ -35,8 +35,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const [loading, setLoading] = useState(false);
 
   const [createPaymentIntent] = useCreatePaymentIntentMutation();
-
-  const amount = Number(orderInfo?.totalAmount) * 100;
+  const amount = Math.ceil(Number(orderInfo?.totalAmount) * 100)
 
   const handleSubmit = async (event: FieldValues) => {
     setLoading(true);

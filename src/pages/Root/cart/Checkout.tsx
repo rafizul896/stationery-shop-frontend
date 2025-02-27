@@ -54,7 +54,7 @@ const Checkout = () => {
     price: product.price,
   }));
 
-  const totalConst = subTotal + shippingCost;
+  const totalCost = subTotal + shippingCost;
 
   const formRef = useRef<{ submit: () => void } | null>(null);
 
@@ -65,7 +65,7 @@ const Checkout = () => {
   const orderInfo = {
     user: data?.data?._id,
     products: cartProducts,
-    totalAmount: totalConst,
+    totalAmount: totalCost,
     shippingAddress: shippingAddressdata,
     status: "Pending",
     paymentMethod,
@@ -138,7 +138,10 @@ const Checkout = () => {
                   id="Cash on Delivery"
                   value="Cash on Delivery"
                 />{" "}
-                <label className="cursor-pointer text-sm" htmlFor="Cash on Delivery">
+                <label
+                  className="cursor-pointer text-sm"
+                  htmlFor="Cash on Delivery"
+                >
                   Cash On Delivery
                 </label>
               </button>
@@ -256,11 +259,11 @@ const Checkout = () => {
               </div>
               <div className="mt-4 flex justify-between">
                 <p className="text-sm">Shipping Cost</p>
-                <p>${shippingCost}</p>
+                <p>${shippingCost.toFixed(2)}</p>
               </div>
               <div className="mt-4 pt-2 flex justify-between border-t-2 ">
                 <p className="font-semibold text-sm font-heading">TOTAL COST</p>
-                <p>${totalConst}</p>
+                <p>${totalCost.toFixed(2)}</p>
               </div>
             </div>
           </div>
