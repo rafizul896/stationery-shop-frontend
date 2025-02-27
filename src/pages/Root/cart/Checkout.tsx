@@ -110,13 +110,13 @@ const Checkout = () => {
               <div className="flex flex-col lg:flex-row gap-4 ml-3 lg:ml-0">
                 <div>
                   <RadioGroupItem id="5" value="5" />{" "}
-                  <label className="cursor-pointer" htmlFor="5">
+                  <label className="cursor-pointer text-sm" htmlFor="5">
                     Today Delivery ($10)
                   </label>
                 </div>
                 <div>
                   <RadioGroupItem id="3" value="3" />{" "}
-                  <label className="cursor-pointer" htmlFor="3">
+                  <label className="cursor-pointer text-sm" htmlFor="3">
                     3 Days Delivery ($3)
                   </label>
                 </div>
@@ -138,13 +138,13 @@ const Checkout = () => {
                   id="Cash on Delivery"
                   value="Cash on Delivery"
                 />{" "}
-                <label className="cursor-pointer" htmlFor="Cash on Delivery">
+                <label className="cursor-pointer text-sm" htmlFor="Cash on Delivery">
                   Cash On Delivery
                 </label>
               </button>
               <button onClick={() => formRef.current?.submit()}>
                 <RadioGroupItem id="Card" value="Card" />{" "}
-                <label className="cursor-pointer" htmlFor="Card">
+                <label className="cursor-pointer text-sm" htmlFor="Card">
                   Credit Card
                 </label>
               </button>

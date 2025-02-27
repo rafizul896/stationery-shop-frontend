@@ -1,4 +1,5 @@
 import SectionTitle from "@/components/Shared/SectionTitle";
+import { Link } from "react-router-dom";
 
 const FeaturedCategories = () => {
   const categories = [
@@ -33,21 +34,22 @@ const FeaturedCategories = () => {
       />
       <div className="custom-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
         {categories.map((category, index) => (
-          <div
+          <Link
+            to={`/products?category=${category.categoryName}`}
             key={index}
-            className="border p-2 cursor-pointer rounded-lg shadow-lg text-center"
+            className="border p-2 cursor-pointer rounded-lg shadow text-center"
           >
-            <div className="bg-gray-100 mb-2 h-[200px] rounded-lg flex items-center justify-center">
+            <div className="bg-gray-100 mb-2 h-[150px] p-2 rounded flex items-center justify-center">
               <img
-                src={category.image}
-                alt={category.categoryName}
-                className="h-full w-full object-cover rounded-lg"
+                src={category?.image}
+                alt={category?.categoryName}
+                className="h-full w-full object-cover rounded opacity-90 hover:opacity-100 transition"
               />
             </div>
             <p className="text-lg text-gray-700 font-medium mb-2">
               {category.categoryName}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

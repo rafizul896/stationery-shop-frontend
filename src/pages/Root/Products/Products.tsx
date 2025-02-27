@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import FInput from "@/components/form/FInput";
 import {
@@ -9,6 +9,8 @@ import ProductCard from "@/components/card/ProductCard";
 import { TQueryParam } from "@/types";
 import ReactSlider from "react-slider";
 import Loader from "@/components/Shared/Loader";
+import { useSearchParams } from "react-router-dom";
+import CustomPagination from "@/components/Shared/Pagination";
 
 const categories = [
   "Writing",
@@ -27,6 +29,19 @@ const ProductPage = () => {
   const [sortBy, setSortBy] = useState("Default");
   const [range, setRange] = useState([0, 1000]);
 
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  useEffect(() => {
+    if (category) {
+      setSelectedCategories((prev) =>
+        prev.includes(category) ? prev : [...prev, category]
+      );
+    }
+  }, [category]);
+
   // Construct query parameters
   const queryParams: TQueryParam[] = [
     search && { name: "searchTerm", value: search },
@@ -43,10 +58,12 @@ const ProductPage = () => {
     },
     sortBy !== "Default" && { name: "sort", value: sortBy },
     { name: "limit", value: itemsPerPage.toString() },
+    { name: "page", value: page },
   ].filter(Boolean) as TQueryParam[];
 
   const { data, isLoading, isFetching } = useGetAllProductsQuery(queryParams);
   const productData = data?.data;
+  const totalPages = data?.meta?.totalPage;
 
   const { data: brandData } = useGetAllbrandsQuery({
     category: selectedCategories.join(","),
@@ -125,7 +142,7 @@ const ProductPage = () => {
             />{" "}
             In Stock
           </div>
-          
+
           <div className="mt-4">
             <h2 className="text-lg font-semibold mb-2">Categories</h2>
             {categories?.map((category, index) => (
@@ -214,6 +231,22 @@ const ProductPage = () => {
               ))}
             </div>
           )}
+        </div>
+
+        <div className="flex justify-end">
+          <div>
+            <CustomPagination
+              page={page}
+              totalPages={totalPages as number}
+              limit={limit}
+              onPageChange={setPage}
+              onLimitChange={(newLimit) => {
+                setLimit(newLimit);
+                setPage(1); // Reset to page 1 when limit changes
+              }}
+              className="hidden"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -32,6 +32,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.4.3",
     "jwt-decode": "^4.0.0",
+    "keen-slider": "^6.8.6",
     "localforage": "^1.10.0",
     "lucide-react": "^0.475.0",
     "match-sorter": "^8.0.0",

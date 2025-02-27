@@ -1,42 +1,49 @@
 import { TProduct } from "@/types/product";
-import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { MdAddShoppingCart } from "react-icons/md";
+import { toast } from "react-toastify";
+import { useAppDispatch } from "@/redux/hooks";
+import { addToCart } from "@/redux/features/cart/cartSlice";
 
 const ProductCard = ({ product }: { product: TProduct }) => {
+  const dispatch = useAppDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, cartQuantity: 1 }));
+    toast.success(`${product.name} added to cart`);
+  };
+
   return (
-    <Link to={`/products/${product._id}`} className="border rounded-lg shadow-lg p-4 w-full">
-      <img
-        src={product?.imageUrl}
-        alt={product?.name}
-        className="w-full max-h-40 object-cover rounded-md"
-      />
-      <div className="mt-3">
-        <h3 className="text-lg font-semibold">{product?.name}</h3>
-        <p className="text-gray-500 text-sm">{product?.brand}</p>
-        <div className="flex items-center text-yellow-500 mt-1">
-          <Star size={16} className="fill-yellow-500" />
-          <span className="ml-1 text-sm">
-            {product?.averageRating} ({product?.reviews?.length} reviews)
-          </span>
-        </div>
-        <p className="text-sm text-gray-700 mt-2">{product?.description}</p>
-        <div className="mt-3 flex justify-between items-center">
-          <span className="text-lg font-bold text-secondary">
-            ${product?.price}
-          </span>
+    <div className="border bg-white rounded shadow p-4 hover:shadow-md transition">
+      <div className="flex justify-center">
+        <Link to={`/products/${product?._id}`} className="h-[150px]">
+          <img
+            src={product?.imageUrl as string}
+            alt={product?.name}
+            className="h-full w-full object-cover rounded opacity-90 hover:opacity-100 transition"
+          />
+        </Link>
+      </div>
+
+      {/* Product Details */}
+      <div>
+        <div className="flex  items-center justify-between mt-3">
+          <p className="text-lg font-semibold">${product?.price}</p>
           <button
-            className={`px-4 py-2 text-white rounded-lg ${
-              product?.inStock
-                ? "bg-primary hover:bg-phover"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
-            disabled={!product?.inStock}
+            onClick={handleAddToCart}
+            className="flex gap-3 items-center text-lg bg-whit rounded-full p-1"
           >
-            {product?.inStock ? "Add to Cart" : "Out of Stock"}
+            <MdAddShoppingCart className="hover:text-secondary transition" />
           </button>
         </div>
+        <Link
+          to={`/products/${product?._id}`}
+          className="text-sm text-gray-600"
+        >
+          {product?.name}
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 

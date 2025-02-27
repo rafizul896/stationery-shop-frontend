@@ -21,6 +21,7 @@ interface PaginationProps {
   limit: number;
   onPageChange: (newPage: number) => void;
   onLimitChange: (newLimit: number) => void;
+  className?: string;
 }
 
 const CustomPagination: React.FC<PaginationProps> = ({
@@ -29,11 +30,12 @@ const CustomPagination: React.FC<PaginationProps> = ({
   limit,
   onPageChange,
   onLimitChange,
+  className,
 }) => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-between mt-6 w-full">
       {/* Limit Selector */}
-      <div className="flex items-center gap-2">
+      <div className={`flex items-center gap-2 ${className}`}>
         <p className="text-sm font-medium">Rows per page:</p>
         <Select
           value={limit.toString()}
