@@ -6,9 +6,13 @@ import SectionTitle from "@/components/Shared/SectionTitle";
 import { Link } from "react-router-dom";
 import CustomButton from "@/components/ui/CustomButton";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import "keen-slider/keen-slider.min.css";
+import Loader from "@/components/Shared/Loader";
 
 const FeaturedProducts = () => {
-  const { data } = useGetAllProductsQuery([{ name: "limit", value: 10 }]);
+  const { data, isLoading } = useGetAllProductsQuery([
+    { name: "limit", value: 10 },
+  ]);
   const products = data?.data;
 
   const [sliderRef, instanceRef] = useKeenSlider({
@@ -20,6 +24,14 @@ const FeaturedProducts = () => {
       "(max-width: 480px)": { slides: { perView: 1 } },
     },
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[150px] justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="custom-container">
