@@ -55,7 +55,7 @@ const ManageProducts = () => {
   }
 
   return (
-    <div>
+    <div className="md:w-[90%] mx-auto">
       <Table className="min-w-[500px] overflow-scroll">
         <TableHeader>
           <TableRow>

@@ -68,7 +68,7 @@ const ManageOrders = () => {
   }
 
   return (
-    <div>
+    <div className="md:w-[90%] mx-auto">
       <Table className="min-w-[600px] overflow-scroll">
         <TableHeader>
           <TableRow>

@@ -39,7 +39,7 @@ const FeaturedCategories = () => {
             key={index}
             className="border p-2 cursor-pointer rounded-lg shadow text-center"
           >
-            <div className="bg-gray-100 mb-2 h-[150px] p-2 rounded flex items-center justify-center">
+            <div className="bg-gray-100 mb-2 h-[180px] p-2 rounded flex items-center justify-center">
               <img
                 src={category?.image}
                 alt={category?.categoryName}

@@ -169,7 +169,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation Links */}
       <DisclosurePanel className="sm:hidden">
-        <div className="flex flex-col space-y-1 px-2 pb-3 pt-2 text-white">
+        <div className="flex flex-col space-y-3 px-6 pb-3 pt-2 text-white">
           {links.map((link) => (
             <NavLink
               key={link.path}

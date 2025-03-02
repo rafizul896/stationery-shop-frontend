@@ -4,8 +4,8 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { useGetAllReviewsQuery } from "@/redux/features/product/productApi";
-import "swiper/css";
-import "swiper/css/navigation";
+import "swiper/swiper-bundle.css";
+
 
 const Testimonials = () => {
   const { data } = useGetAllReviewsQuery(undefined);
@@ -16,12 +16,10 @@ const Testimonials = () => {
     <div className="custom-container">
       <SectionTitle
         heading="Testimonials "
-        // subTitle="What Our Customers Say!Real stories from satisfied customers!"
       />
 
       <Swiper
         navigation={true}
-        // loop={ true}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,

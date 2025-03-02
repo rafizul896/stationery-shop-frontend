@@ -31,7 +31,7 @@ const ManageUsers = () => {
   const [status, setStatus] = useState("active");
   const [statusChange] = useStatusChangeMutation();
 
-  const { data, isLoading, isFetching } = useGetAllUsersQuery([
+  const { data, isLoading } = useGetAllUsersQuery([
     { name: "page", value: page },
     { name: "limit", value: limit },
     { name: "searchTerm", value: searchTerm },
@@ -57,7 +57,7 @@ const ManageUsers = () => {
     }
   };
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[400px]">
         <Loader />
@@ -66,7 +66,7 @@ const ManageUsers = () => {
   }
 
   return (
-    <div>
+    <div className="md:w-[90%] mx-auto">
       <div className="flex flex-col md:flex-row justify-between gap-5">
         <div className="w-full">
           <FInput

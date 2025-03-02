@@ -70,7 +70,7 @@ const ManageProfile = () => {
   };
 
   return (
-    <div>
+    <div className="md:w-[90%] mx-auto">
       <h2 className="text-2xl text-gray-800 md:text-3xl font-semibold text-center font-heading">
         Shipping Address
       </h2>

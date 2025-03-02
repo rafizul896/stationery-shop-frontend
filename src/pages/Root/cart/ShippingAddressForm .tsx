@@ -28,7 +28,6 @@ const ShippingAddressForm = forwardRef(
       handleSubmit,
       reset,
       watch,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       formState: { errors, isValid },
     } = useForm<TShippingAddressFormValues>({
       mode: "onChange", // Enables real-time validation
@@ -43,6 +42,8 @@ const ShippingAddressForm = forwardRef(
 
     // Watch all form fields
     const watchFields = watch();
+
+    console.log(isValid)
 
     // Check if all fields are filled
     useEffect(() => {
