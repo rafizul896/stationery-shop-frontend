@@ -1,50 +1,86 @@
-# React + TypeScript + Vite
+# Stationery Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+The **Stationery Store** is a full-featured e-commerce platform that allows users to browse and purchase a variety of stationery products. The frontend is built using React.js and Tailwind CSS, offering a seamless and user-friendly shopping experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+### **User Registration & Authentication (Role-Based)**
+- Secure user registration with name, email, and password.
+- Users are assigned a default "User" role upon registration.
+- Login authentication using email and password.
+- JWT-based authentication with tokens stored in local storage.
+- Logout functionality clears the JWT token.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### **Public Routes**
+#### Home Page:
+- **Navbar**: Includes a logo, navigation items, and login/signup buttons.
+- **Banner**: Displays promotional content or special offers.
+- **Featured Products**: Showcases up to 6 products with a "View All" button leading to the All Products page.
+- **Additional Sections**: Includes testimonials or blog content for better engagement.
+- **Footer**: Contains essential links, social media icons, and contact details.
 
-- Configure the top-level `parserOptions` property like this:
+#### All Products Page:
+- Search functionality by title, author, or category.
+- Filtering options for price range, category, and availability.
+- Dynamic result updates based on search terms or filters.
+- Product cards displaying product name, price, and category.
+- "View Details" button for each product.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+#### Product Details Page:
+- Displays a product image along with detailed information.
+- Includes an "Add to Cart" button.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+#### About Page:
+- Provides information about the shop’s mission and values.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### **Private Routes**
+#### Cart Page:
+- Users can add products to the cart and place orders.
+- Prevents ordering more than available stock.
+- Displays product details, user details, and total price.
+- "Order Now" button for confirming purchases.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+#### **Dashboard (Role-Based Access)**
+##### **Admin Dashboard:**
+- Manage users (e.g., deactivate accounts).
+- Perform CRUD operations on products.
+- Handle order management (CRUD operations).
+- Approve orders by changing order status from "Pending" to "Shipping."
+
+##### **User Dashboard:**
+- View order history.
+- Manage profile settings (e.g., default shipping address).
+
+## Technologies Used
+- **Frontend**: React.js, Tailwind CSS, Redux-Toolkit
+- **Authentication**: JSON Web Token (JWT)
+- **Payment Integration**: Stripe
+- **Hosting**: Vercel
+
+## Setup Instructions
+
+### **Frontend Setup**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/rafizul896/stationery-shop-frontend.git
+   cd stationery-shop-frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the frontend:
+   ```bash
+   npm start
+   ```
+
+## Contributing
+
+If you want to contribute to this project, follow these steps:
+1. Fork the repository.
+2. Create a new branch (`feature-branch`).
+3. Commit your changes.
+4. Push to the branch and submit a pull request.
+
