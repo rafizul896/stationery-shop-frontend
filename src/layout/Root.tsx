@@ -9,7 +9,7 @@ const Root = () => {
         <Navbar />
       </div>
 
-      <div className="min-h-[calc(100vh-324px)]">
+      <div className="min-h-[calc(100vh-324px)] mt-[100px]">
         <Outlet />
       </div>
       <div className="bg-[url('https://i.ibb.co/BPqXNY7/7.pn')] bg-[#41246d] text-white bg-cover bg-no-repeat">
