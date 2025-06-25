@@ -11,6 +11,7 @@ import ReactSlider from "react-slider";
 import Loader from "@/components/Shared/Loader";
 import { useSearchParams } from "react-router-dom";
 import CustomPagination from "@/components/Shared/Pagination";
+import { FaBoxOpen } from "react-icons/fa";
 
 const categories = [
   "Writing",
@@ -226,9 +227,23 @@ const ProductPage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-              {productData?.map((product) => (
-                <ProductCard product={product} key={product._id} />
-              ))}
+              {productData?.length ? (
+                productData?.map((product) => (
+                  <ProductCard product={product} key={product._id} />
+                ))
+              ) : (
+                <div className="flex justify-center col-span-3">
+                  <div className="flex flex-col items-center justify-center min-h-[40vh] text-center px-4 py-10">
+                    <FaBoxOpen className="text-6xl text-gray-400 mb-4" />
+                    <h2 className="text-2xl font-semibold text-gray-700">
+                      No Product Found
+                    </h2>
+                    <p className="text-gray-500 mt-2">
+                      Try adjusting your filters or search terms.
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
