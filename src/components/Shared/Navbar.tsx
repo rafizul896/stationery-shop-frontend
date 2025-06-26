@@ -35,10 +35,6 @@ const links = [
     path: "/about",
   },
   {
-    title: "Services",
-    path: "/services",
-  },
-  {
     title: "Blog",
     path: "/blog",
   },
@@ -378,7 +374,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to="/login"
-                    className="bg-secondary text-primary px-3 sm:px-4 py-2 rounded-full hover:bg-opacity-90 transition-colors duration-200 text-xs sm:text-sm font-medium whitespace-nowrap"
+                    className="bg-secondary text-white px-3 sm:px-4 py-2 rounded-full hover:bg-opacity-90 transition-colors duration-200 text-xs sm:text-sm font-medium whitespace-nowrap"
                   >
                     Login
                   </Link>
