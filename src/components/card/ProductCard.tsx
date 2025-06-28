@@ -38,7 +38,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         </div>
         <Link
           to={`/products/${product?._id}`}
-          className="text-sm text-gray-600"
+          className="font-semibold text-gray-600"
         >
           {product?.name}
         </Link>
