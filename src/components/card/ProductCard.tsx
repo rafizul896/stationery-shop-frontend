@@ -9,6 +9,11 @@ const ProductCard = ({ product }: { product: TProduct }) => {
   const dispatch = useAppDispatch();
 
   const handleAddToCart = () => {
+    if (!product?.inStock) {
+      toast.error(`${product.name} is out of stock`);
+      return
+    }
+
     dispatch(addToCart({ ...product, cartQuantity: 1 }));
     toast.success(`${product.name} added to cart`);
   };
