@@ -1,8 +1,6 @@
 # Stationery Store
 
-## Overview
-
-The **Stationery Store** is a full-featured e-commerce platform that allows users to browse and purchase a variety of stationery products. The frontend is built using React.js and Tailwind CSS, offering a seamless and user-friendly shopping experience.
+**Stationery Store** is a full-featured e-commerce platform that allows users to browse and purchase a variety of stationery products. The frontend is built using React.js and Tailwind CSS, offering a seamless and user-friendly shopping experience.
 
 ## Features
 
