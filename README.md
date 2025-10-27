@@ -63,6 +63,8 @@
 1. Clone the repository:
    ```bash
    git clone https://github.com/rafizul896/stationery-shop-frontend.git
+   ```
+   ```bash
    cd stationery-shop-frontend
    ```
 2. Install dependencies:
