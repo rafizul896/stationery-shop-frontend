@@ -52,7 +52,7 @@
 - Manage profile settings (e.g., default shipping address).
 
 ## Technologies Used
-- **Frontend**: React.js, Tailwind CSS, Redux-Toolkit
+- **Frontend**: React.js, Tailwind CSS, Ant Design, Redux-Toolkit
 - **Authentication**: JSON Web Token (JWT)
 - **Payment Integration**: Stripe
 - **Hosting**: Vercel
